@@ -7,7 +7,6 @@ if __name__ == "__main__":
     myclient = MongoClient("mongodb://localhost:27017/")
     mydb = myclient["logs"]
     mycol = mydb["nginx"]
-    print(mycol.find_one())
     print(mycol.count_documents({}), 'logs')
     print('Methods:')
     methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
@@ -16,8 +15,11 @@ if __name__ == "__main__":
         print(f'\tmethod {i}: {result}')
     print(mycol.count_documents({'path': '/status'}), 'status check')
     # ips = mycol.aggregate([{'$match': {'_id': 'ip', 'count': {'$sum': 1}}}])
-    ips = mycol.aggregate([{'$group': {'_id': '$ip', 'count': {'$sum': 1}}},
-                         {'$limit': 10}, {'$sort': {'count': -1}}])
+    ips = mycol.aggregate([{'$group': {'_id': '$ip', 'count': {'$sum': 1}}}, {'$sort': {'count': -1}}])
     print('IPs:')
+    total = 0
     for result in ips:
         print(f'\t{result["_id"]}: {result["count"]}')
+        total += 1
+        if total == 10:
+            break
