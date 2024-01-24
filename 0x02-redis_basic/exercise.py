@@ -23,7 +23,7 @@ class Cache:
         return self._redis.get(key)
 
     def get_str(self, data: str) -> str:
-        return self.get(data, str)
+        return self.get(data, lambda d: d.decode("utf-8"))
 
     def get_int(self, data: str) -> int:
-        return self.get(data, int)
+        return self.get(data, lambda d: int(d))
