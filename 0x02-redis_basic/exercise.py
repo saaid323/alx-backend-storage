@@ -2,15 +2,15 @@
 '''store an instance of the Redis client'''
 import uuid
 import redis
-from typing import Union, Callable
+from typing import Union, Callable, Any
 from functools import wraps
 
 
-def count_calls(method: Callable):
+def count_calls(method: Callable) -> Callable:
     '''count how many times methods of the Cache class are called''' 
     name = method.__qualname__
     @wraps(method)
-    def wrapper(self, *args, **kwargs):
+    def wrapper(self, *args, **kwargs -> Any):
         self._redis.incr(name)
         return method(self, *args, **kwargs)
     return wrapper
