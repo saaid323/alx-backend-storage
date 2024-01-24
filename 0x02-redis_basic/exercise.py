@@ -7,8 +7,9 @@ from functools import wraps
 
 
 def count_calls(method: Callable) -> Callable:
-    '''count how many times methods of the Cache class are called''' 
+    '''count how many times methods of the Cache class are called'''
     name = method.__qualname__
+
     @wraps(method)
     def wrapper(self, *args, **kwargs) -> Any:
         print('hello')
@@ -53,7 +54,7 @@ class Cache:
 # cache = Cache()
 
 # TEST_CASES = {
-    #b"foo": None,
+    # b"foo": None,
     # 123: int,
     # "bar": lambda d: d.decode("utf-8")
 # }
