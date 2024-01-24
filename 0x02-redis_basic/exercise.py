@@ -17,11 +17,12 @@ def count_calls(method: Callable) -> Callable:
 
 class Cache:
     '''classs used to store item in database'''
-
+    
     def __init__(self):
         self._redis = redis.Redis()
         self._redis.flushdb()
-
+    
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         key = uuid.uuid4()
         self._redis.set(str(key), data)
