@@ -23,15 +23,17 @@ class Cache:
             fn: Callable = None) -> Union[str,
                                           bytes,
                                           int,
-                                          float]:
-        if self._redis.exists(key) == False:
+                                          float,
+                                          None]:
+        data = self._redis.get(key)
+        if data is None:
             return None
-        if fn is not None:
-            return fn(self._redis.get(key))
-        return self._redis.get(key)
+        if fn:
+            return fn(data)
+        return data
 
-    def get_str(self, data: str) -> str:
-        return self.get(data, lambda d: d.decode("utf-8"))
+    def get_str(self, key: str) -> Union[str, None]:
+        return self.get(key, fn=lambda d: d.decode("utf-8"))
 
-    def get_int(self, data: str) -> int:
-        return self.get(data, lambda d: int(d))
+    def get_int(self, key: str) -> Union[int, None]:
+        return self.get(key, fn=int)
