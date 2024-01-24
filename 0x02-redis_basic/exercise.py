@@ -24,12 +24,11 @@ class Cache:
                                           bytes,
                                           int,
                                           float]:
-        data = self._redis.get(key)
-        if data == None:
+        if self._redis.exists(key) == False:
             return None
         if fn is not None:
-            return fn(data)
-        return data
+            return fn(self._redis.get(key))
+        return self._redis.get(key)
 
     def get_str(self, data: str) -> str:
         return self.get(data, lambda d: d.decode("utf-8"))
