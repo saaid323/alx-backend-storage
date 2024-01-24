@@ -7,13 +7,11 @@ from functools import wraps
 
 
 def count_calls(method: Callable):
-    '''to count how many times methods of the Cache class are called''' 
+    '''count how many times methods of the Cache class are called''' 
     name = method.__qualname__
     @wraps(method)
     def wrapper(self, *args, **kwargs):
-        print(name)
-        self._redis.set(name, self._redis.incr(name, amount=1))
-        print(name)
+        self._redis.incr(name, amount=1)
         return method(self, *args, **kwargs)
     return wrapper
 
