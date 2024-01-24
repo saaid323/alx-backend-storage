@@ -18,9 +18,9 @@ class Cache:
         return str(key)
 
     def get(self, key: str, fn: Callable=None) -> Union[str, bytes, int, float]:
-        if fn == None:
-            return self._redis.get(key)
-        return fn(self._redis.get(key))
+        if fn is not None:
+            return fn(self._redis.get(key))
+        return self._redis.get(key)
 
     def get_str(self, data: str) -> str:
         return self.get(data, str)
