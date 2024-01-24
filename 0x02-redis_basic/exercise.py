@@ -36,7 +36,7 @@ def replay(method: Callable) -> None:
     for i, j in zip(output, input):
         j = j.decode("utf-8")
         i = i.decode("utf-8")
-        print(f'{method.__qualname__}(*({j})) -> {i}')
+        print(f'{method.__qualname__}(*{j}) -> {i}')
 
 
 class Cache:
