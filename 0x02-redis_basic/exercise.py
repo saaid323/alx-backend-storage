@@ -17,35 +17,35 @@ class Cache:
         store = self._redis.set(str(key), data)
         return str(key)
 
-    def get(self,
-            key: str,
-            fn: Callable = None) -> Union[str,
-                                          bytes,
-                                          int,
-                                          float,
-                                          None]:
-        if self._redis.exists(key) == False:
-            return None
-        data = self._redis.get(key)
-        if fn:
-            return fn(data)
-        return data
+    # def get(self,
+            # key: str,
+            # fn: Callable = None) -> Union[str,
+                                          # bytes,
+                                          # int,
+                                          # float,
+                                          # None]:
+        # if self._redis.exists(key) == False:
+            # return None
+        # data = self._redis.get(key)
+        # if fn:
+            # return fn(data)
+        # return data
 
-    def get_str(self, key: str) -> str:
-        return self.get(key, fn=lambda d: d.decode("utf-8"))
+    # def get_str(self, key: str) -> str:
+        # return self.get(key, fn=lambda d: d.decode("utf-8"))
 
-    def get_int(self, key: str) -> int:
-        return self.get(key, fn=int)
+    # def get_int(self, key: str) -> int:
+        # return self.get(key, fn=int)
 
 
-cache = Cache()
+# cache = Cache()
 
-TEST_CASES = {
-    b"foo": None,
-    123: int,
-    "bar": lambda d: d.decode("utf-8")
-}
+# TEST_CASES = {
+    #b"foo": None,
+    # 123: int,
+    # "bar": lambda d: d.decode("utf-8")
+# }
 
-for value, fn in TEST_CASES.items():
-    key = cache.store(value)
-    assert cache.get(key, fn=fn) == value
+# for value, fn in TEST_CASES.items():
+    # key = cache.store(value)
+    # assert cache.get(key, fn=fn) == value
