@@ -32,10 +32,10 @@ class Cache:
         return data
 
     def get_str(self, key: str) -> str:
-        return self.get(key, fn=lambda d: d.decode("utf-8"))
+        return self.get(key, str)
 
     def get_int(self, key: str) -> int:
-        return self.get(key, fn=int)
+        return self.get(key, int)
 
 
 # cache = Cache()
