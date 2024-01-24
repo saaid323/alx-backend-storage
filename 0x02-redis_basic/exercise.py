@@ -42,7 +42,7 @@ def replay(method: Callable) -> Callable:
 
 class Cache:
     '''classs used to store item in database'''
-    
+
     def __init__(self):
         self._redis = redis.Redis()
         self._redis.flushdb()
