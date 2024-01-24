@@ -28,6 +28,17 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
+def replay(method: Callable) -> Callable:
+    redis_instance = redis.Redis()
+    input = f'{method.__qualname__}:inputs'
+    output = f'{method.__qualname__}:outputs'
+    input = redis_instance.lrange(input, 0, -1)
+    output = redis_instance.lrange(output, 0, -1)
+    for i, j in zip(output, input):
+        j = j.decode("utf-8")
+        i = i.decode("utf-8")
+        print(f'{method.__qualname__}(*({j})) -> {i}')
+
 
 class Cache:
     '''classs used to store item in database'''
@@ -62,16 +73,3 @@ class Cache:
 
     def get_int(self, key: str) -> int:
         return self.get(key, int)
-
-
-# cache = Cache()
-
-# TEST_CASES = {
-    # b"foo": None,
-    # 123: int,
-    # "bar": lambda d: d.decode("utf-8")
-# }
-
-# for value, fn in TEST_CASES.items():
-    # key = cache.store(value)
-    # assert cache.get(key, fn=fn) == value
