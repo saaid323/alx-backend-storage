@@ -27,8 +27,7 @@ def call_history(method: Callable) -> Callable:
         return key
     return wrapper
 
-
-def replay(method: Callable) -> Callable:
+def replay(method: Callable) -> None:
     redis_instance = redis.Redis()
     input = f'{method.__qualname__}:inputs'
     output = f'{method.__qualname__}:outputs'
