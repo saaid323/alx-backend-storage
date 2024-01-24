@@ -2,7 +2,7 @@
 '''store an instance of the Redis client'''
 import uuid
 import redis
-from typing import Unioin, Callable
+from typing import Union, Callable
 
 
 class Cache:
@@ -37,3 +37,16 @@ class Cache:
 
     def get_int(self, key: str) -> int:
         return self.get(key, fn=int)
+
+
+cache = Cache()
+
+TEST_CASES = {
+    b"foo": None,
+    123: int,
+    "bar": lambda d: d.decode("utf-8")
+}
+
+for value, fn in TEST_CASES.items():
+    key = cache.store(value)
+    assert cache.get(key, fn=fn) == value
