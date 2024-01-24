@@ -5,5 +5,4 @@ cache = Cache()
 cache.store("foo")
 cache.store("bar")
 cache.store(42)
-print(replay(cache.store))
-
+replay(cache.store)
