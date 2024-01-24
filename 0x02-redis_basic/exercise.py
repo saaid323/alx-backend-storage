@@ -27,12 +27,15 @@ def call_history(method: Callable) -> Callable:
         return key
     return wrapper
 
+
 def replay(method: Callable) -> None:
     redis_instance = redis.Redis()
     input = f'{method.__qualname__}:inputs'
     output = f'{method.__qualname__}:outputs'
     input = redis_instance.lrange(input, 0, -1)
     output = redis_instance.lrange(output, 0, -1)
+    stored = list(zip(output, input))
+    print(f'{method.__qualname__} was called {len(stored)} times:')
     for i, j in zip(output, input):
         j = j.decode("utf-8")
         i = i.decode("utf-8")
@@ -60,7 +63,7 @@ class Cache:
                                           int,
                                           float,
                                           None]:
-        if self._redis.exists(key) == False:
+        if self._redis.exists(key) is False:
             return None
         data = self._redis.get(key)
         if fn:
