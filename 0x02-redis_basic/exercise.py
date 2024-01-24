@@ -2,7 +2,7 @@
 '''store an instance of the Redis client'''
 import uuid
 import redis
-from typing import Union
+from typing import Unioin, Callable
 
 
 class Cache:
@@ -25,15 +25,15 @@ class Cache:
                                           int,
                                           float,
                                           None]:
-        data = self._redis.get(key)
-        if data is None:
+        if self._redis.exists(key) == False:
             return None
+        data = self._redis.get(key)
         if fn:
             return fn(data)
         return data
 
-    def get_str(self, key: str) -> Union[str, None]:
+    def get_str(self, key: str) -> str:
         return self.get(key, fn=lambda d: d.decode("utf-8"))
 
-    def get_int(self, key: str) -> Union[int, None]:
+    def get_int(self, key: str) -> int:
         return self.get(key, fn=int)
