@@ -10,7 +10,8 @@ def count_calls(method: Callable) -> Callable:
     '''count how many times methods of the Cache class are called''' 
     name = method.__qualname__
     @wraps(method)
-    def wrapper(self, *args, **kwargs -> Any):
+    def wrapper(self, *args, **kwargs) -> Any:
+        print('hello')
         self._redis.incr(name)
         return method(self, *args, **kwargs)
     return wrapper
