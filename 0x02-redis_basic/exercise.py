@@ -26,7 +26,7 @@ class Cache:
         return self.get(data, lambda d: d.decode("utf-8"))
 
     def get_int(self, data: int) -> int:
-        return self.get(data, int)
+        return self.get(data, lambda d: int(d)))
 
 
 cache = Cache()
