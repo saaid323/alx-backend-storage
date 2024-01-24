@@ -16,3 +16,27 @@ class Cache:
         store = self._redis.set(str(key), data)
         self.flush
         return str(key)
+
+    def get(self, key: str, fn: Callable=None) -> Union[str, bytes, int, float]:
+        if fn == None:
+            return self._redis.get(key)
+        return fn(self._redis.get(key))
+
+    def get_str(self, data: str) -> str:
+        return self.get(data, str)
+
+    def get_int(self, data: int) -> int:
+        return self.get(data, int)
+
+
+cache = Cache()
+
+TEST_CASES = {
+    b"foo": None,
+    123: int,
+    "bar": lambda d: d.decode("utf-8")
+}
+
+for value, fn in TEST_CASES.items():
+    key = cache.store(value)
+    assert cache.get(key, fn=fn) == value
