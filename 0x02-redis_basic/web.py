@@ -10,7 +10,7 @@ def track(method: Callable) -> Callable:
     cache = redis.Redis()
 
     @wraps(method)
-    def wrapper(url) -> str:
+    def wrapper(url):
         if cache.exists(f'count:{url}'):
             cache.incr(f'count:{url}')
             cache.setex(f'count:{url}', 10, cache.get(f'count:{url}'))
