@@ -16,7 +16,7 @@ def track(method: Callable) -> Callable:
             cache.setex(f'count:{url}', 10, cache.get(f'count:{url}'))
         else:
             cache.setex(f'count:{url}', 10, 1)
-        return track(url)
+        return method(url)
     return wrapper
 
 
