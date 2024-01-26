@@ -11,10 +11,11 @@ def track(method: Callable) -> Callable:
 
     @wraps(method)
     def wrapper(url) -> str:
-        if cache.exists(content):
-            value = cache.
-            cache.incr('count:{url}')
-            cache.setex('count:{url}', 10, cache.get('count:{url}'))
+        if cache.exists(f'count:{url}'):
+            cache.incr(f'count:{url}')
+            cache.setex(f'count:{url}', 10, cache.get(f'count:{url}'))
+        else:
+            cache.setex(f'count:{url}', 10, 1)
         return track(url)
     return wrapper
 
