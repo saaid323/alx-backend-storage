@@ -10,7 +10,7 @@ def track(method: Callable) -> Callable:
     cache = redis.Redis()
 
     @wraps(method)
-    def wrapper(url -> str) -> str:
+    def wrapper(url: str) -> str:
         if cache.get(f'count:{url}'):
             cache.incr(f'count:{url}')
             return cache.get(f'count:{url}').decode("utf-8"
