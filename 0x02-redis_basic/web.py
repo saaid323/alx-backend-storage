@@ -13,9 +13,9 @@ def track(method: Callable) -> Callable:
     def wrapper(url -> str) -> str:
         if cache.get(f'count:{url}'):
             cache.incr(f'count:{url}')
-            return cache.get(f'count:{url}').decode("utf-8")
-        cache.set(f'count:{url}', 1)
+            return cache.get(f'count:{url}').decode("utf-8"
         cache.setex(f'result{url}', 10, method(url))
+        cache.set(f'count:{url}', 1)
         return method(url)
     return wrapper
 
