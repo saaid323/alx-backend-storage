@@ -13,7 +13,7 @@ def track(method: Callable) -> Callable:
     def wrapper(url):
         if cache.exists(f'count:{url}'):
             cache.incr(f'count:{url}')
-            cache.setex(f'result{url}', 10, cache.get(f'count:{url}'))
+            cache.setex(f'result{url}', 10, method(url))
         else:
             cache.incr(f'count:{url}')
         return method(url)
