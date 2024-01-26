@@ -47,12 +47,14 @@ class Cache:
     '''classs used to store item in database'''
 
     def __init__(self):
+        '''creates private varible'''
         self._redis = redis.Redis()
         self._redis.flushdb()
 
     @call_history
     @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
+        '''store data'''
         key = uuid.uuid4()
         self._redis.set(str(key), data)
         return str(key)
@@ -64,6 +66,7 @@ class Cache:
                                           int,
                                           float,
                                           None]:
+        '''used to convert the data back to the desired format'''
         if self._redis.exists(key) is False:
             return None
         data = self._redis.get(key)
@@ -72,7 +75,9 @@ class Cache:
         return data
 
     def get_str(self, key: str) -> str:
+        ''' parametrize Cache.get with the correct conversion function'''
         return self.get(key, str)
 
     def get_int(self, key: str) -> int:
+        ''' parametrize Cache.get with the correct conversion function'''
         return self.get(key, int)
